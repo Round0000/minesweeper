@@ -28,7 +28,7 @@ function findAdjacent(target) {
   target.seen = true;
   console.log("target : ", target);
 
-  let adj = {};
+  let adj = [];
 
   // adj.topleft =
   //   adj.top =
@@ -40,67 +40,71 @@ function findAdjacent(target) {
   //   adj.left =
   //     target;
 
-  adj.topleft = {
+  adj.push({
     x: target.x - 1,
     y: target.y - 1,
-  };
+  });
 
-  adj.top = {
+  adj.push({
     x: target.x,
     y: target.y - 1,
-  };
+  });
 
-  adj.topright = {
+  adj.push({
     x: target.x + 1,
     y: target.y - 1,
-  };
+  });
 
-  adj.right = {
+  adj.push({
     x: target.x + 1,
     y: target.y,
-  };
+  });
 
-  adj.bottomright = {
+  adj.push({
     x: target.x + 1,
     y: target.y + 1,
-  };
+  });
 
-  adj.bottom = {
+  adj.push({
     x: target.x,
     y: target.y + 1,
-  };
+  });
 
-  adj.bottomleft = {
+  adj.push({
     x: target.x - 1,
     y: target.y + 1,
-  };
+  });
 
-  adj.left = {
+  adj.push({
     x: target.x - 1,
     y: target.y,
-  };
+  });
 
-  Object.keys(adj).forEach((el) => {
+  console.log(adj);
+
+
+  adj.forEach((el) => {
     if (
-      adj[el].x === 0 ||
-      adj[el].y === 0 ||
-      adj[el].x > fieldSize.cols ||
-      adj[el].y > fieldSize.rows
+      el.x === 0 ||
+      el.y === 0 ||
+      el.x > fieldSize.cols ||
+      el.y > fieldSize.rows
     ) {
-      console.log(adj[el], "is out of bounds!");
-      adj[el] = null;
+      el = null;
     } else {
-      document.querySelector(`.cell[data-ref="${adj[el].x}_${adj[el].y}"]`).style.background = "blue"
-      field.forEach((cell) => {
-        if (cell.x === adj[el].x && cell.y === adj[el].y) {
-          cell.seen = true;
-        }
-      });
+      console.log(el.x, el.y);
+      document.querySelector(
+        `.cell[data-ref="${el.x}_${el.y}"]`
+      ).style.background = "pink";
+
+      const cellObj = field.find(cell => cell.x === el.x && cell.y === el.y);
+
+      cellObj.seen = true;
+
+
     }
   });
 
-  // console.log(target);
-  console.table(adj);
 }
 
 //
@@ -117,7 +121,5 @@ function displayField(field) {
 
 //
 generateField(fieldSize);
-findAdjacent(field[55]);
 displayField(field);
-
-
+findAdjacent(field[29]);
