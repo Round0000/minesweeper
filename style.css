@@ -1,0 +1,43 @@
+@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap");
+:root {
+  --clr-blue: #1fb6ff;
+  --clr-purple: #7e5bef;
+  --clr-pink: #ff49db;
+  --clr-orange: #ff7849;
+  --clr-green: #13ce66;
+  --clr-yellow: #ffc82c;
+  --clr-gray-dark: #273444;
+  --clr-gray: #8492a6;
+  --clr-gray-light: #d3dce6;
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+body {
+  font-family: "Atkinson Hyperlegible", Tahoma, sans-serif;
+  background-color: #111;
+}
+input,
+button {
+  font-family: inherit;
+} /*****************/
+
+#ui_field {
+  display: grid;
+  grid-template-columns: repeat(10, 52px);
+  grid-template-rows: repeat(10, 52px);
+  margin: 3em auto;
+  width: max-content;
+}
+
+.cell {
+  background-color: white;
+  border: 1px solid salmon;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
