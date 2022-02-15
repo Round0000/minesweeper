@@ -28,8 +28,8 @@ button {
 
 #ui_field {
   display: grid;
-  grid-template-columns: repeat(10, 52px);
-  grid-template-rows: repeat(10, 52px);
+  grid-template-columns: repeat(10, 32px);
+  grid-template-rows: repeat(10, 32px);
   margin: 3em auto;
   width: max-content;
 }
