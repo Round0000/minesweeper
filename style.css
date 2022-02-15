@@ -57,8 +57,9 @@ button {
 
 .flagged {
   background: url("./flag.png");
-  background-size: 80%;
+  background-size: 70%;
   background-repeat: no-repeat;
   background-position: 50%;
-  background-color: white;
+  background-color: var(--clr-gray-light);
+  background-blend-mode: multiply;
 }

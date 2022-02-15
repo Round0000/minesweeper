@@ -4,13 +4,23 @@ function getRandom(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-const field = [];
-const safeCells = [];
-
-let fieldSize = {
-  cols: 10,
-  rows: 10,
+const currentGame = {
+  field: [],
+  safeCells: [],
+  fieldSize: {},
 };
+
+function initGame(options) {
+  currentGame.field = [];
+  currentGame.safeCells = [];
+  currentGame.fieldSize.cols = options.cols;
+  currentGame.fieldSize.rows = options.rows;
+  ui_field.innerHTML = "";
+
+  generateField(currentGame.fieldSize);
+
+  displayField(currentGame.field);
+}
 
 function generateField(size) {
   let x = 1;
@@ -20,14 +30,14 @@ function generateField(size) {
     const cell = {
       x: x,
       y: y,
-      mine: getRandom(0, 22) === 0,
+      mine: getRandom(0, 8) === 0,
     };
 
     if (!cell.mine) {
-      safeCells.push(cell);
+      currentGame.safeCells.push(cell);
     }
 
-    field.push(cell);
+    currentGame.field.push(cell);
 
     if (x < 10) {
       x += 1;
@@ -40,7 +50,7 @@ function generateField(size) {
 
 function findAdjacent(target) {
   target.seen = true;
-  // console.log("target : ", target);
+  //
 
   let adj = [];
 
@@ -90,12 +100,14 @@ function findAdjacent(target) {
     if (
       el.x === 0 ||
       el.y === 0 ||
-      el.x > fieldSize.cols ||
-      el.y > fieldSize.rows
+      el.x > currentGame.fieldSize.cols ||
+      el.y > currentGame.fieldSize.rows
     ) {
       el = null;
     } else {
-      const cellObj = field.find((cell) => cell.x === el.x && cell.y === el.y);
+      const cellObj = currentGame.field.find(
+        (cell) => cell.x === el.x && cell.y === el.y
+      );
 
       if (!cellObj.mine && !cellObj.seen) {
         cellObj.seen = true;
@@ -165,7 +177,9 @@ function findAdjacentMines(cell) {
   const minedCells = [];
 
   adj.forEach((el) => {
-    const cellObj = field.find((cell) => cell.x === el.x && cell.y === el.y);
+    const cellObj = currentGame.field.find(
+      (cell) => cell.x === el.x && cell.y === el.y
+    );
 
     if (cellObj && cellObj.mine) {
       minedCells.push(cellObj);
@@ -184,32 +198,40 @@ function displayField(field) {
     c.dataset.x = cell.x;
     c.dataset.y = cell.y;
 
-    if (cell.mine) {
-      c.classList.add("mined");
-    }
     ui_field.append(c);
   });
 }
 
 //
-generateField(fieldSize);
-displayField(field);
+initGame({ cols: 10, rows: 10 });
 
 //
 
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("cell")) {
-    const targetCell = field.find(
+    const targetCell = currentGame.field.find(
       (c) => c.x == e.target.dataset.x && c.y == e.target.dataset.y
     );
+
+    if (targetCell.mine) {
+      e.target.classList.add("mined");
+      ui_field.style.pointerEvents = "none";
+      ui_field.style.outline = "8px solid crimson";
+
+      setTimeout(() => {
+        initGame({ cols: 10, rows: 10 });
+        ui_field.style.pointerEvents = "all";
+        ui_field.style.outline = "initial";
+      }, 1000);
+
+      return;
+    }
 
     if (e.target.classList.contains("flagged")) {
       e.target.classList.remove("flagged");
     }
 
     targetCell.seen = true;
-
-    console.log(targetCell);
 
     if (targetCell.mine) return "mine";
 
@@ -221,8 +243,6 @@ document.addEventListener("click", (e) => {
       }
     } else {
       const results = [targetCell, ...findAdjacent(targetCell)];
-
-      console.log(results);
 
       results.forEach((res) => {
         const visibleCell = document.querySelector(
@@ -243,16 +263,21 @@ document.addEventListener("click", (e) => {
 
     e.target.classList.add("visible");
 
-    console.log("initial query :", targetCell);
-
     if (!checkIfVictory()) {
-      console.log("BRAVO !");
+      ui_field.style.pointerEvents = "none";
+      ui_field.style.outline = "8px solid green";
+
+      setTimeout(() => {
+        initGame({ cols: 10, rows: 10 });
+        ui_field.style.pointerEvents = "all";
+        ui_field.style.outline = "initial";
+      }, 2000);
     }
   }
 });
 
 function checkIfVictory() {
-  const remainingSafeCells = safeCells.filter((c) => !c.seen);
+  const remainingSafeCells = currentGame.safeCells.filter((c) => !c.seen);
   return remainingSafeCells.length;
 }
 
@@ -262,8 +287,17 @@ function flagCell(c) {
 }
 
 document.addEventListener("contextmenu", (e) => {
-  if (e.target.classList.contains("cell")) {
-    e.preventDefault();
+  e.preventDefault();
+  if (
+    e.target.classList.contains("cell") &&
+    !e.target.classList.contains("visible")
+  ) {
     flagCell(e.target);
+  }
+});
+
+document.addEventListener("keyup", (e) => {
+  if (e.key === "r") {
+    initGame({ cols: 10, rows: 10 });
   }
 });
