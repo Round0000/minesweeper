@@ -35,9 +35,30 @@ button {
 }
 
 .cell {
-  background-color: white;
+  background-color: var(--clr-gray-light);
   border: 1px solid salmon;
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
+}
+
+.visible {
+  background-color: white;
+}
+
+.mined {
+  border-width: 3px;
+  border-radius: 8px;
+  transform: scale(.9);
+  color: var(--clr-orange);
+  background-color: #222;
+}
+
+.flagged {
+  background: url("./flag.png");
+  background-size: 80%;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  background-color: white;
 }
