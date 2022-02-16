@@ -239,14 +239,12 @@ document.addEventListener("click", (e) => {
 
     if (targetCell.mine) {
       e.target.classList.add("mined");
-      ui_frame.style.pointerEvents = "none";
       ui_frame.classList.add("defeat");
       clearInterval(currentGame.timerActive);
       currentGame.timerActive = false;
 
       setTimeout(() => {
         initGame();
-        ui_frame.style = "";
         ui_frame.classList.remove("defeat");
       }, 1000);
 
@@ -298,15 +296,12 @@ document.addEventListener("click", (e) => {
     }
 
     if (!checkIfVictory()) {
-      ui_field.style.pointerEvents = "none";
-      ui_field.style.outline = "8px solid green";
       ui_frame.classList.add("victory");
       clearInterval(currentGame.timerActive);
       currentGame.timerActive = false;
 
       setTimeout(() => {
         initGame();
-        ui_field.style = "";
         ui_frame.classList.remove("victory");
       }, 2000);
     }
