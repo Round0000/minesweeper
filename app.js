@@ -338,6 +338,8 @@ document.addEventListener("contextmenu", (e) => {
 });
 
 ui_start_btn.addEventListener("click", (e) => {
+  clearInterval(currentGame.timerActive);
+  currentGame.timerActive = false;
   initGame();
 });
 
