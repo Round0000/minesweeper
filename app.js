@@ -203,7 +203,7 @@ function displayField(field) {
 }
 
 //
-initGame({ cols: 10, rows: 10 });
+initGame({ cols: 9, rows: 9 });
 
 //
 
@@ -219,7 +219,7 @@ document.addEventListener("click", (e) => {
       ui_field.style.outline = "8px solid crimson";
 
       setTimeout(() => {
-        initGame({ cols: 10, rows: 10 });
+        initGame({ cols: 9, rows: 9 });
         ui_field.style = "";
       }, 1000);
 
@@ -271,7 +271,7 @@ document.addEventListener("click", (e) => {
       ui_field.style.outline = "8px solid green";
 
       setTimeout(() => {
-        initGame({ cols: 10, rows: 10 });
+        initGame({ cols: 9, rows: 9 });
         ui_field.style = "";
       }, 2000);
     }
@@ -300,6 +300,6 @@ document.addEventListener("contextmenu", (e) => {
 
 document.addEventListener("keyup", (e) => {
   if (e.key === "r") {
-    initGame({ cols: 10, rows: 10 });
+    initGame({ cols: 9, rows: 9 });
   }
 });
