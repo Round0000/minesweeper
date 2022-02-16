@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap");
+
+
 :root {
   --clr-blue: #0000ff;
   --clr-green: #008000;
@@ -10,7 +12,7 @@
   --clr-gray: #808080;
   --clr-lightgray: #c0c0c0;
 
-  --cellsize: 38px;
+  --cellsize: 32px;
 }
 *,
 *::before,
@@ -20,7 +22,7 @@
   margin: 0;
 }
 body {
-  font-family: "Atkinson Hyperlegible", Tahoma, sans-serif;
+  font-family: "Atkinson Hyperlegible", sans-serif;
   background-color: #111;
 }
 input,
@@ -31,7 +33,7 @@ button {
 #ui_frame {
   background-color: var(--clr-lightgray);
   width: max-content;
-  margin: auto;
+  margin: 4em auto 1em;
   padding: 16px;
 }
 
@@ -48,15 +50,13 @@ button {
 }
 
 .cell {
-  /* border: 1px solid transparent; */
-  /* box-shadow: inset 3px 3px 0 #fff, inset -3px -3px 0 var(--clr-gray); */
   border: 5px solid var(--clr-gray);
   border-left: 5px solid white;
   border-top: 5px solid white;
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
+  cursor: default;
   font-size: var(--cellsize);
   font-weight: bold;
   background-color: var(--clr-lightgray);
@@ -65,7 +65,7 @@ button {
 .visible {
   background-color: var(--clr-lightgray);
   box-shadow: none;
-  border: 1px solid var(--clr-gray);
+  border: 2px solid var(--clr-gray);
 }
 
 .cell[data-adjmines="1"] {
@@ -93,24 +93,29 @@ button {
   color: var(--clr-gray);
 }
 
-.mined {
-  background: url(./img/mine.png);
-  background-size: 100%;
-  background-repeat: no-repeat;
-  image-rendering: pixelated;
-}
-
 .flagged {
   background: url(./img/flag.png);
   background-size: 100%;
   background-repeat: no-repeat;
-  image-rendering: pixelated;
+}
+
+.hypothese {
+  background: url(./img/hypothese.png);
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+
+.mined {
+  background: url(./img/mine.png);
+  background-size: 100%;
+  background-repeat: no-repeat;
 }
 
 /* Interface */
 #ui_header {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  /* justify-content: space-between; */
   align-items: center;
   padding: 6px;
   margin-bottom: 16px;
@@ -121,32 +126,53 @@ button {
 
 #ui_start_btn {
   all: unset;
-  width: 44px;
-  height: 44px;
-  border: 4px solid var(--clr-gray);
+  display: block;
+  width: 38px;
+  height: 38px;
+  border: 3px solid var(--clr-gray);
   border-top-color: white;
   border-top-width: 3px;
   border-left-color: white;
   border-left-width: 3px;
   background: url(./img/smiley.png);
-  background-size: 86%;
+  background-size: 100%;
   background-repeat: no-repeat;
-  background-position: 50%;
-  /* image-rendering: pixelated; */
-  outline: 1px solid var(--clr-gray);
+  outline: 2px solid var(--clr-gray);
+  justify-self: center;
 }
 
-#ui_header p {
-  align-self: stretch;
-  border: 1px solid var(--clr-gray);
+#ui_start_btn:active {
+  background-color: var(--clr-lightgray);
+  border-color: var(--clr-gray);
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+}
+
+#ui_header canvas {
+  border: 2px solid var(--clr-gray);
   border-bottom-color: white;
   border-right-color: white;
-  width: 84px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: red;
-  background-color: black;
-  font-size: 42px;
-  font-family: monospace;
+  height: calc(var(--cellsize) * 1.5);
+  opacity: 0;
+}
+
+#ui_header canvas:last-of-type {
+  justify-self: end;
+}
+
+#number_images {
+  display: none;
+}
+
+/* UI at defeat */
+.defeat,
+.victory {
+  pointer-events: none;
+}
+
+.defeat #ui_start_btn {
+  background-image: url(./img/smiley-defeat.png);
+}
+.victory #ui_start_btn {
+  background-image: url(./img/smiley-victory.png);
 }

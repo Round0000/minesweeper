@@ -4,17 +4,30 @@ function getRandom(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+const options = {
+  fieldSize: {
+    cols: 9,
+    rows: 9,
+  },
+  minescount: 10,
+};
+
 const currentGame = {
   field: [],
   safeCells: [],
   fieldSize: {},
+  minescount: 0,
+  timer: 0,
+  timerActive: false,
 };
 
-function initGame(options) {
+function initGame() {
   currentGame.field = [];
   currentGame.safeCells = [];
-  currentGame.fieldSize.cols = options.cols;
-  currentGame.fieldSize.rows = options.rows;
+  currentGame.fieldSize.cols = options.fieldSize.cols;
+  currentGame.fieldSize.rows = options.fieldSize.rows;
+  currentGame.minescount = options.minescount;
+  currentGame.timer = 0;
   ui_field.innerHTML = "";
 
   generateField(currentGame.fieldSize);
@@ -30,12 +43,7 @@ function generateField(size) {
     const cell = {
       x: x,
       y: y,
-      mine: getRandom(0, 4) === 0,
     };
-
-    if (!cell.mine) {
-      currentGame.safeCells.push(cell);
-    }
 
     currentGame.field.push(cell);
 
@@ -46,6 +54,24 @@ function generateField(size) {
       y += 1;
     }
   }
+
+  for (i = 0; i < currentGame.minescount; i++) {
+    const f = currentGame.field;
+    const c = f[getRandom(0, f.length - 1)];
+
+    if (!c.mine) {
+      c.mine = true;
+    } else {
+      i--;
+    }
+  }
+
+  currentGame.safeCells = currentGame.field.filter((el) => !el.mine);
+
+  displayCount(ui_minescount, currentGame.minescount);
+  displayCount(ui_timecount, currentGame.timer);
+
+  console.log("CURRENT GAME : ", currentGame);
 }
 
 function findAdjacent(target) {
@@ -116,10 +142,6 @@ function findAdjacent(target) {
       }
     }
   });
-
-  // results.forEach(
-  //   (res) => (results = new Set([...results, ...findAdjacent(res)]))
-  // );
 
   results.forEach((res) => {
     if (!res.adjMines) {
@@ -203,24 +225,29 @@ function displayField(field) {
 }
 
 //
-initGame({ cols: 9, rows: 9 });
 
 //
 
 document.addEventListener("click", (e) => {
-  if (e.target.classList.contains("cell")) {
+  if (
+    e.target.classList.contains("cell") &&
+    !e.target.classList.contains("flagged")
+  ) {
     const targetCell = currentGame.field.find(
       (c) => c.x == e.target.dataset.x && c.y == e.target.dataset.y
     );
 
     if (targetCell.mine) {
       e.target.classList.add("mined");
-      ui_field.style.pointerEvents = "none";
-      ui_field.style.outline = "8px solid crimson";
+      ui_frame.style.pointerEvents = "none";
+      ui_frame.classList.add("defeat");
+      clearInterval(currentGame.timerActive);
+      currentGame.timerActive = false;
 
       setTimeout(() => {
-        initGame({ cols: 9, rows: 9 });
-        ui_field.style = "";
+        initGame();
+        ui_frame.style = "";
+        ui_frame.classList.remove("defeat");
       }, 1000);
 
       return;
@@ -229,10 +256,11 @@ document.addEventListener("click", (e) => {
     if (e.target.classList.contains("flagged")) {
       e.target.classList.remove("flagged");
     }
+    if (e.target.classList.contains("hypothese")) {
+      e.target.classList.remove("hypothese");
+    }
 
     targetCell.seen = true;
-
-    if (targetCell.mine) return "mine";
 
     if (findAdjacentMines(targetCell)) {
       const adjMines = findAdjacentMines(targetCell);
@@ -250,7 +278,7 @@ document.addEventListener("click", (e) => {
         );
 
         visibleCell.classList.add("visible");
-        visibleCell.classList.remove("flagged");
+        visibleCell.classList.remove("flagged", "hypothese");
 
         const adjMines = findAdjacentMines(res);
         if (adjMines) {
@@ -262,13 +290,24 @@ document.addEventListener("click", (e) => {
 
     e.target.classList.add("visible");
 
+    if (!currentGame.timerActive && currentGame.timer === 0) {
+      currentGame.timerActive = setInterval(() => {
+        currentGame.timer++;
+        displayCount(ui_timecount, currentGame.timer);
+      }, 1000);
+    }
+
     if (!checkIfVictory()) {
       ui_field.style.pointerEvents = "none";
       ui_field.style.outline = "8px solid green";
+      ui_frame.classList.add("victory");
+      clearInterval(currentGame.timerActive);
+      currentGame.timerActive = false;
 
       setTimeout(() => {
-        initGame({ cols: 9, rows: 9 });
+        initGame();
         ui_field.style = "";
+        ui_frame.classList.remove("victory");
       }, 2000);
     }
   }
@@ -281,11 +320,22 @@ function checkIfVictory() {
 
 // Flag a cell
 function flagCell(c) {
-  c.classList.add("flagged");
+  if (c.classList.contains("flagged")) {
+    c.classList.replace("flagged", "hypothese");
+    currentGame.minescount++;
+    displayCount(ui_minescount, currentGame.minescount);
+  } else if (c.classList.contains("hypothese")) {
+    c.classList.remove("hypothese");
+  } else {
+    c.classList.add("flagged");
+    currentGame.minescount--;
+    displayCount(ui_minescount, currentGame.minescount);
+  }
 }
 
 document.addEventListener("contextmenu", (e) => {
   e.preventDefault();
+
   if (
     e.target.classList.contains("cell") &&
     !e.target.classList.contains("visible")
@@ -294,12 +344,59 @@ document.addEventListener("contextmenu", (e) => {
   }
 });
 
-document.addEventListener("keyup", (e) => {
-  if (e.key === "r") {
-    initGame({ cols: 9, rows: 9 });
-  }
+ui_start_btn.addEventListener("click", (e) => {
+  initGame();
 });
 
-ui_start_btn.addEventListener("click", (e) => {
-  initGame({ cols: 9, rows: 9 });
-});
+// Display counts
+function displayCount(canvas, count) {
+  if (count < 0) {
+    currentGame.minescount = 0;
+    return;
+  }
+
+  count = count < 100 && count >= 10 ? "0" + count : count;
+  count = count < 10 ? "00" + count : count;
+
+  const numbers = count.toString().split("");
+
+  let ctx = canvas.getContext("2d");
+  canvas.width = ctx.canvas.height * 3 * 0.5652173913;
+
+  let sources = [];
+
+  numbers.forEach((n) => {
+    sources.push(document.getElementById("num_" + n));
+  });
+
+  ctx.drawImage(
+    sources[0],
+    0,
+    0,
+    ctx.canvas.height * 0.5652173913,
+    ctx.canvas.height
+  );
+  ctx.drawImage(
+    sources[1],
+    ctx.canvas.height * 0.5652173913,
+    0,
+    ctx.canvas.height * 0.5652173913,
+    ctx.canvas.height
+  );
+  ctx.drawImage(
+    sources[2],
+    ctx.canvas.height * 2 * 0.5652173913,
+    0,
+    ctx.canvas.height * 0.5652173913,
+    ctx.canvas.height
+  );
+
+  canvas.style.opacity = 1;
+}
+
+window.onload = () => {
+  initGame();
+};
+//
+//
+//
