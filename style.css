@@ -30,8 +30,8 @@ button {
 
 #ui_field {
   display: grid;
-  grid-template-columns: repeat(10, var(--cellsize));
-  grid-template-rows: repeat(10, var(--cellsize));
+  grid-template-columns: repeat(9, var(--cellsize));
+  grid-template-rows: repeat(9, var(--cellsize));
   margin: 3em auto;
   width: max-content;
   background-color: var(--clr-lightgray);
