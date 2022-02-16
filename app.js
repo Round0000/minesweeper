@@ -39,7 +39,7 @@ function generateField(size) {
 
     currentGame.field.push(cell);
 
-    if (x < 10) {
+    if (x < currentGame.fieldSize.cols) {
       x += 1;
     } else {
       x = 1;
