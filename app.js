@@ -70,8 +70,6 @@ function generateField(size) {
 
   displayCount(ui_minescount, currentGame.minescount);
   displayCount(ui_timecount, currentGame.timer);
-
-  console.log("CURRENT GAME : ", currentGame);
 }
 
 function findAdjacent(target) {
