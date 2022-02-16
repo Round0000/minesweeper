@@ -235,7 +235,6 @@ document.addEventListener("click", (e) => {
     if (targetCell.mine) return "mine";
 
     if (findAdjacentMines(targetCell)) {
-      console.log(findAdjacentMines(targetCell));
       const adjMines = findAdjacentMines(targetCell);
       e.target.classList.add("visible");
       if (adjMines) {
@@ -250,8 +249,6 @@ document.addEventListener("click", (e) => {
           `.cell[data-x="${res.x}"][data-y="${res.y}"]`
         );
 
-        console.log(e.target.dataset.adjmines);
-
         visibleCell.classList.add("visible");
         visibleCell.classList.remove("flagged");
 
@@ -259,7 +256,6 @@ document.addEventListener("click", (e) => {
         if (adjMines) {
           visibleCell.innerText = adjMines;
           visibleCell.dataset.adjmines = findAdjacentMines(res);
-          console.log(findAdjacentMines(res));
         }
       });
     }
