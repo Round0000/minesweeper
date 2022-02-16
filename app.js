@@ -30,7 +30,7 @@ function generateField(size) {
     const cell = {
       x: x,
       y: y,
-      mine: getRandom(0, 8) === 0,
+      mine: getRandom(0, 4) === 0,
     };
 
     if (!cell.mine) {
@@ -220,8 +220,7 @@ document.addEventListener("click", (e) => {
 
       setTimeout(() => {
         initGame({ cols: 10, rows: 10 });
-        ui_field.style.pointerEvents = "all";
-        ui_field.style.outline = "initial";
+        ui_field.style = "";
       }, 1000);
 
       return;
@@ -236,9 +235,11 @@ document.addEventListener("click", (e) => {
     if (targetCell.mine) return "mine";
 
     if (findAdjacentMines(targetCell)) {
-      e.target.classList.add("visible");
+      console.log(findAdjacentMines(targetCell));
       const adjMines = findAdjacentMines(targetCell);
+      e.target.classList.add("visible");
       if (adjMines) {
+        e.target.dataset.adjmines = adjMines;
         e.target.innerText = adjMines;
       }
     } else {
@@ -249,7 +250,7 @@ document.addEventListener("click", (e) => {
           `.cell[data-x="${res.x}"][data-y="${res.y}"]`
         );
 
-        e.target.dataset.adjmines = findAdjacentMines(targetCell);
+        console.log(e.target.dataset.adjmines);
 
         visibleCell.classList.add("visible");
         visibleCell.classList.remove("flagged");
@@ -257,6 +258,8 @@ document.addEventListener("click", (e) => {
         const adjMines = findAdjacentMines(res);
         if (adjMines) {
           visibleCell.innerText = adjMines;
+          visibleCell.dataset.adjmines = findAdjacentMines(res);
+          console.log(findAdjacentMines(res));
         }
       });
     }
@@ -269,8 +272,7 @@ document.addEventListener("click", (e) => {
 
       setTimeout(() => {
         initGame({ cols: 10, rows: 10 });
-        ui_field.style.pointerEvents = "all";
-        ui_field.style.outline = "initial";
+        ui_field.style = "";
       }, 2000);
     }
   }
