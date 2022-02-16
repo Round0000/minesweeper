@@ -28,11 +28,17 @@ button {
   font-family: inherit;
 } /*****************/
 
+#ui_frame {
+  background-color: var(--clr-lightgray);
+  width: max-content;
+  margin: auto;
+  padding: 16px;
+}
+
 #ui_field {
   display: grid;
   grid-template-columns: repeat(9, var(--cellsize));
   grid-template-rows: repeat(9, var(--cellsize));
-  margin: 3em auto;
   width: max-content;
   background-color: var(--clr-lightgray);
   user-select: none;
@@ -99,4 +105,48 @@ button {
   background-size: 100%;
   background-repeat: no-repeat;
   image-rendering: pixelated;
+}
+
+/* Interface */
+#ui_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px;
+  margin-bottom: 16px;
+  border: 2px solid var(--clr-gray);
+  border-bottom-color: white;
+  border-right-color: white;
+}
+
+#ui_start_btn {
+  all: unset;
+  width: 44px;
+  height: 44px;
+  border: 4px solid var(--clr-gray);
+  border-top-color: white;
+  border-top-width: 3px;
+  border-left-color: white;
+  border-left-width: 3px;
+  background: url(./img/smiley.png);
+  background-size: 86%;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  /* image-rendering: pixelated; */
+  outline: 1px solid var(--clr-gray);
+}
+
+#ui_header p {
+  align-self: stretch;
+  border: 1px solid var(--clr-gray);
+  border-bottom-color: white;
+  border-right-color: white;
+  width: 84px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: red;
+  background-color: black;
+  font-size: 42px;
+  font-family: monospace;
 }
