@@ -298,6 +298,7 @@ document.addEventListener("contextmenu", (e) => {
   }
 });
 
+
 document.addEventListener("keyup", (e) => {
   if (e.key === "r") {
     initGame({ cols: 9, rows: 9 });
