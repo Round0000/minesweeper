@@ -337,6 +337,7 @@ document.addEventListener("contextmenu", (e) => {
   }
 });
 
+// Start button
 ui_start_btn.addEventListener("click", (e) => {
   clearInterval(currentGame.timerActive);
   currentGame.timerActive = false;
@@ -389,9 +390,10 @@ function displayCount(canvas, count) {
   canvas.style.opacity = 1;
 }
 
+//
+
 window.onload = () => {
   initGame();
 };
-//
 //
 //
