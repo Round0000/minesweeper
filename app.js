@@ -76,47 +76,7 @@ function findAdjacent(target) {
   target.seen = true;
   //
 
-  let adj = [];
-
-  adj.push({
-    x: target.x - 1,
-    y: target.y - 1,
-  });
-
-  adj.push({
-    x: target.x,
-    y: target.y - 1,
-  });
-
-  adj.push({
-    x: target.x + 1,
-    y: target.y - 1,
-  });
-
-  adj.push({
-    x: target.x + 1,
-    y: target.y,
-  });
-
-  adj.push({
-    x: target.x + 1,
-    y: target.y + 1,
-  });
-
-  adj.push({
-    x: target.x,
-    y: target.y + 1,
-  });
-
-  adj.push({
-    x: target.x - 1,
-    y: target.y + 1,
-  });
-
-  adj.push({
-    x: target.x - 1,
-    y: target.y,
-  });
+  const adj = mapCells(target);
 
   let results = [];
 
@@ -150,49 +110,56 @@ function findAdjacent(target) {
   return results;
 }
 
+// Map of adjacent cells
+function mapCells(c) {
+  const res = [];
+
+  res.push({
+    x: c.x - 1,
+    y: c.y - 1,
+  });
+
+  res.push({
+    x: c.x,
+    y: c.y - 1,
+  });
+
+  res.push({
+    x: c.x + 1,
+    y: c.y - 1,
+  });
+
+  res.push({
+    x: c.x + 1,
+    y: c.y,
+  });
+
+  res.push({
+    x: c.x + 1,
+    y: c.y + 1,
+  });
+
+  res.push({
+    x: c.x,
+    y: c.y + 1,
+  });
+
+  res.push({
+    x: c.x - 1,
+    y: c.y + 1,
+  });
+
+  res.push({
+    x: c.x - 1,
+    y: c.y,
+  });
+
+  return res;
+}
+
 // Find adjacent mines
 function findAdjacentMines(cell) {
-  const adj = [];
-
-  adj.push({
-    x: cell.x - 1,
-    y: cell.y - 1,
-  });
-
-  adj.push({
-    x: cell.x,
-    y: cell.y - 1,
-  });
-
-  adj.push({
-    x: cell.x + 1,
-    y: cell.y - 1,
-  });
-
-  adj.push({
-    x: cell.x + 1,
-    y: cell.y,
-  });
-
-  adj.push({
-    x: cell.x + 1,
-    y: cell.y + 1,
-  });
-
-  adj.push({
-    x: cell.x,
-    y: cell.y + 1,
-  });
-
-  adj.push({
-    x: cell.x - 1,
-    y: cell.y + 1,
-  });
-
-  adj.push({
-    x: cell.x - 1,
-    y: cell.y,
-  });
+  const adj = mapCells(cell);
 
   const minedCells = [];
 
@@ -222,7 +189,30 @@ function displayField(field) {
   });
 }
 
-//
+// In case of defeat (clicked on a mine)
+function defeat(cell) {
+  cell.classList.add("mined");
+  ui_frame.classList.add("defeat");
+  clearInterval(currentGame.timerActive);
+  currentGame.timerActive = false;
+
+  setTimeout(() => {
+    initGame();
+    ui_frame.classList.remove("defeat");
+  }, 1000);
+}
+
+// In case of victory (all safe cells visible)
+function victory() {
+  ui_frame.classList.add("victory");
+  clearInterval(currentGame.timerActive);
+  currentGame.timerActive = false;
+
+  setTimeout(() => {
+    initGame();
+    ui_frame.classList.remove("victory");
+  }, 2000);
+}
 
 //
 
@@ -236,16 +226,7 @@ document.addEventListener("click", (e) => {
     );
 
     if (targetCell.mine) {
-      e.target.classList.add("mined");
-      ui_frame.classList.add("defeat");
-      clearInterval(currentGame.timerActive);
-      currentGame.timerActive = false;
-
-      setTimeout(() => {
-        initGame();
-        ui_frame.classList.remove("defeat");
-      }, 1000);
-
+      defeat(e.target);
       return;
     }
 
@@ -257,6 +238,7 @@ document.addEventListener("click", (e) => {
     }
 
     targetCell.seen = true;
+    e.target.classList.add("visible");
 
     if (findAdjacentMines(targetCell)) {
       const adjMines = findAdjacentMines(targetCell);
@@ -284,8 +266,6 @@ document.addEventListener("click", (e) => {
       });
     }
 
-    e.target.classList.add("visible");
-
     if (!currentGame.timerActive && currentGame.timer === 0) {
       currentGame.timerActive = setInterval(() => {
         currentGame.timer++;
@@ -293,23 +273,11 @@ document.addEventListener("click", (e) => {
       }, 1000);
     }
 
-    if (!checkIfVictory()) {
-      ui_frame.classList.add("victory");
-      clearInterval(currentGame.timerActive);
-      currentGame.timerActive = false;
-
-      setTimeout(() => {
-        initGame();
-        ui_frame.classList.remove("victory");
-      }, 2000);
+    if (!currentGame.safeCells.filter((c) => !c.seen).length) {
+      victory();
     }
   }
 });
-
-function checkIfVictory() {
-  const remainingSafeCells = currentGame.safeCells.filter((c) => !c.seen);
-  return remainingSafeCells.length;
-}
 
 // Flag a cell
 function flagCell(c) {
