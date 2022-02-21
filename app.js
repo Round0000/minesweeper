@@ -22,7 +22,7 @@ const currentGame = {
   timerActive: false,
 };
 
-const best = JSON.parse(localStorage.getItem("best")) || {
+const best = JSON.parse(localStorage.getItem("minesweeper_best")) || {
   beginner: {
     name: "Anonymous",
     time: 999,
@@ -215,29 +215,58 @@ function displayField(field) {
 
 // In case of defeat (clicked on a mine)
 function defeat(cell) {
-  cell.classList.add("mined");
+  cell.classList.add("exploded", "visible");
+
+  currentGame.field.forEach((c) => {
+    if (c.mine) {
+      ui_field
+        .querySelector(`.cell[data-x="${c.x}"][data-y="${c.y}"`)
+        .classList.add("mined", "visible");
+    }
+  });
+
   ui_frame.classList.add("defeat");
-  clearInterval(currentGame.timerActive);
-  currentGame.timerActive = false;
+  clearTimer();
 }
 
 // In case of victory (all safe cells visible)
 function victory() {
   ui_frame.classList.add("victory");
-  clearInterval(currentGame.timerActive);
-  currentGame.timerActive = false;
+  clearTimer();
 
   if (currentGame.timer < best[currentGame.level].time) {
-    best[currentGame.level].time = currentGame.timer;
-    updateLeaderboard();
-
-    localStorage.setItem("best", JSON.stringify(best));
+    ui_save_best.classList.remove("hidden");
+    ui_save_best.querySelector("label span").innerText = currentGame.level;
   }
 }
 
+function saveNewScore() {
+  best[currentGame.level].time = currentGame.timer;
+  best[currentGame.level].name = ui_save_best.best_name.value;
+  updateLeaderboard();
+
+  localStorage.setItem("minesweeper_best", JSON.stringify(best));
+}
+
+ui_save_best.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  saveNewScore();
+
+  ui_save_best.classList.add("hidden");
+  ui_best.classList.remove("hidden");
+});
+
 //
 
-document.addEventListener("click", (e) => {
+function clearTimer() {
+  if (!currentGame.timerActive) return;
+
+  clearInterval(currentGame.timerActive);
+  currentGame.timerActive = false;
+}
+
+ui_field.addEventListener("click", (e) => {
   if (
     e.target.classList.contains("cell") &&
     !e.target.classList.contains("flagged")
@@ -300,6 +329,24 @@ document.addEventListener("click", (e) => {
   }
 });
 
+// Mouse down on cell
+let mousedown = false;
+
+ui_field.addEventListener("mousedown", (e) => {
+  if (!e.target.classList.contains("visible") && e.button === 0) {
+    mousedown = true;
+    ui_frame.classList.add("guessing");
+  }
+});
+
+document.addEventListener("mouseup", (e) => {
+  if (mousedown) {
+    mousedown = false;
+    ui_frame.classList.remove("guessing");
+    e.target.click();
+  }
+});
+
 // Flag a cell
 function flagCell(c) {
   if (c.classList.contains("flagged")) {
@@ -325,13 +372,6 @@ document.addEventListener("contextmenu", (e) => {
   ) {
     flagCell(e.target);
   }
-});
-
-// Start button
-ui_start_btn.addEventListener("click", (e) => {
-  clearInterval(currentGame.timerActive);
-  currentGame.timerActive = false;
-  initGame();
 });
 
 // Display counts
@@ -418,8 +458,6 @@ const opt_form = document.querySelector("#ui_menu_custom form");
 opt_form.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  console.log(opt_form.rows.value);
-
   options.fieldSize.rows = opt_form.rows.value;
   options.fieldSize.cols = opt_form.cols.value;
   options.minescount = opt_form.mines.value;
@@ -457,3 +495,16 @@ window.onload = () => {
 };
 //
 //
+
+// Start button
+ui_start_btn.addEventListener("click", (e) => {
+  clearTimer();
+  initGame();
+});
+
+document.addEventListener("keyup", (e) => {
+  if (e.key === "F2") {
+    clearTimer();
+    initGame();
+  }
+});

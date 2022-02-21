@@ -275,8 +275,8 @@ button {
 
 .cell {
   border: 5px solid var(--clr-gray);
-  border-left: 5px solid white;
-  border-top: 5px solid white;
+  border-left-color:white;
+  border-top-color:white;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -335,6 +335,11 @@ button {
   background-repeat: no-repeat;
 }
 
+.exploded {
+  background-color: var(--clr-red);
+  background-position: 50%;
+}
+
 /* Interface */
 #ui_header {
   display: grid;
@@ -389,7 +394,7 @@ button {
   display: none;
 }
 
-/* UI at defeat */
+/* UI at endgame */
 .defeat #ui_field,
 .victory #ui_field {
   pointer-events: none;
@@ -400,4 +405,37 @@ button {
 }
 .victory #ui_start_btn {
   background-image: url(./img/smiley-victory.png);
+}
+.guessing #ui_start_btn {
+  background-image: url(./img/smiley-guessing.png);
+}
+.guessing .cell:hover:not(.visible):not(.flagged):not(.hypothese) {
+  border-color: transparent;
+  border: 2px solid var(--clr-gray);
+}
+
+#ui_save_best {
+  position: absolute;
+  background-color: #ddd;
+  box-shadow: inset -2px -2px 0 #0005, inset 2px 2px 0 #fff, 1px 2px 8px #0009;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: .9rem;
+  max-width: 16em;
+  text-align: center;
+  padding: 2em;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#ui_save_best p {
+  margin-bottom: 1em;
+}
+
+#ui_save_best button {
+  margin-top: 1em;
+  padding: .25em 1em;
 }

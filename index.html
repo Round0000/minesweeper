@@ -15,6 +15,7 @@
       <img src="./img/smiley.png" alt="" />
       <img src="./img/smiley-defeat.png" alt="" />
       <img src="./img/smiley-victory.png" alt="" />
+      <img src="./img/smiley-guessing.png" alt="" />
       <img id="num_0" src="./img/0.png" alt="" />
       <img id="num_1" src="./img/1.png" alt="" />
       <img id="num_2" src="./img/2.png" alt="" />
@@ -135,6 +136,15 @@
           <canvas id="ui_timecount"> </canvas>
         </header>
         <div id="ui_field"></div>
+
+        <form id="ui_save_best" class="hidden">
+          <label>
+            <p>You have the fastest time for <span>beginner</span> level.</p>
+            <p>Please enter your name.</p>
+            <input type="text" maxlength="16" name="best_name" value="Anonymous">
+          </label>
+          <button type="submit">OK</button>
+        </form>
       </div>
       <ul id="ui_best" class="hidden">
         <p>Fastest Mine Sweepers</p>
