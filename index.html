@@ -42,6 +42,7 @@
                 name="fieldOptions"
                 class="opt_level"
                 id="opt_beginner"
+                checked
               />
               <label for="opt_beginner">Beginner</label>
             </li>
@@ -64,11 +65,7 @@
               <label for="opt_expert">Expert</label>
             </li>
             <li id="ui_menu_custom">
-              <input
-                type="radio"
-                name="fieldOptions"
-                id="opt_custom"
-              />
+              <input type="radio" name="fieldOptions" id="opt_custom" />
               <label for="opt_custom">Custom...</label>
               <form>
                 <label for="opt_rows">
@@ -112,14 +109,20 @@
 
             <hr />
             <li>
-              <button id="btn_marks"><span>Marks (?)</span></button>
+              <input
+                type="checkbox"
+                id="opt_marks"
+              />
+              <label for="opt_marks">Marks (?)</label>
             </li>
-            <li>
-              <button id="btn_color"><span>Color</span></button>
-            </li>
+            
             <hr />
             <li>
-              <button><span>Best Times...</span></button>
+              <input
+                type="checkbox"
+                id="opt_best"
+              />
+              <label for="opt_best">Best Times...</label>
             </li>
           </ul>
         </li>
@@ -133,6 +136,24 @@
         </header>
         <div id="ui_field"></div>
       </div>
+      <ul id="ui_best" class="hidden">
+        <p>Fastest Mine Sweepers</p>
+        <li id="ui_best_beginner">
+          <span class="best_level">Beginner :</span>
+          <span class="best_time"><span>999</span> seconds</span>
+          <span class="best_name">Anonymous</span>
+        </li>
+        <li id="ui_best_intermediate">
+          <span class="best_level">Intermediate :</span>
+          <span class="best_time"><span>999</span> seconds</span>
+          <span class="best_name">Anonymous</span>
+        </li>
+        <li id="ui_best_expert">
+          <span class="best_level">Expert :</span>
+          <span class="best_time"><span>999</span> seconds</span>
+          <span class="best_name">Anonymous</span>
+        </li>
+      </ul>
     </div>
 
     <!--  -->

@@ -30,12 +30,18 @@ body {
 input,
 button {
   font-family: inherit;
-} /*****************/
+}
+
+.hidden {
+  display: none !important;
+}
+
+/*****************/
 
 #ui_window {
   width: max-content;
   margin: 4em auto 1em;
-  background-color: pink;
+  background-color: white;
   box-shadow: 0 2px 4px #0005;
   border: 6px solid #222;
 }
@@ -90,7 +96,8 @@ button {
   padding: 0.25em 1em;
 }
 
-#ui_menu input[type="radio"] {
+#ui_menu input[type="radio"],
+#ui_menu input[type="checkbox"] {
   all: unset;
   display: block;
   align-self: center;
@@ -101,7 +108,7 @@ button {
   position: relative;
 }
 
-#ui_menu input[type="radio"]:checked::before {
+#ui_menu input:checked::before {
   content: "\2713";
   position: absolute;
   inset: 0;
@@ -130,7 +137,7 @@ button {
 }
 
 #ui_menu .ui_menu_subnav li:hover,
-#ui_menu .ui_menu_subnav li:focus-within {
+#ui_menu .ui_menu_subnav li:focus-visible {
   background-color: #316ac5;
   color: white;
 }
@@ -149,7 +156,7 @@ button {
 #ui_menu_custom > input:first-of-type {
   grid-column: 1;
   grid-row: 1;
-  margin-left: .25em;
+  margin-left: 0.25em;
 }
 #ui_menu_custom > label:first-of-type {
   grid-column: 1;
@@ -179,7 +186,7 @@ button {
 
 #ui_menu_custom form input {
   width: 4em;
-  padding: .1em .25em;
+  padding: 0.1em 0.25em;
 }
 
 #opt_buttons {
@@ -192,12 +199,58 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: .25em;
+  padding: 0.25em;
   background-color: white;
 }
 
 #opt_custom:checked ~ form {
   display: block;
+}
+
+/* Best times display */
+#ui_best {
+  list-style: none;
+  padding: 0.5em 1em;
+  background-color: #ece9d8;
+}
+
+#ui_best p {
+  text-align: center;
+  padding: 0.25em;
+  border-bottom: 1px solid #fff;
+  max-width: 24em;
+  margin: 0 auto 0.5em;
+  font-size: 0.9rem;
+  user-select: none;
+}
+
+#ui_best li {
+  display: grid;
+  border: 1px solid white;
+  box-shadow: 0 1px 2px #0005;
+  max-width: 24em;
+  margin: 0.5em auto;
+}
+
+#ui_best li > span {
+  padding: 0.3em 0.5em;
+}
+
+#ui_best .best_level {
+  font-size: 0.9rem;
+  grid-column: 1 / 3;
+  grid-row: 1;
+  background-color: #eee;
+  user-select: none;
+}
+
+#ui_best .best_time {
+  background-color: white;
+}
+
+#ui_best .best_name {
+  background-color: white;
+  text-align: right;
 }
 
 /* Game Interface */
@@ -293,6 +346,7 @@ button {
   border: 2px solid var(--clr-gray);
   border-bottom-color: white;
   border-right-color: white;
+  height: 60px;
 }
 
 #ui_start_btn {
@@ -336,8 +390,8 @@ button {
 }
 
 /* UI at defeat */
-.defeat,
-.victory {
+.defeat #ui_field,
+.victory #ui_field {
   pointer-events: none;
 }
 

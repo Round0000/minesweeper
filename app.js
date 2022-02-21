@@ -10,6 +10,7 @@ const options = {
     rows: 9,
   },
   minescount: 10,
+  level: "beginner",
 };
 
 const currentGame = {
@@ -21,6 +22,21 @@ const currentGame = {
   timerActive: false,
 };
 
+const best = JSON.parse(localStorage.getItem("best")) || {
+  beginner: {
+    name: "Anonymous",
+    time: 999,
+  },
+  intermediate: {
+    name: "Anonymous",
+    time: 999,
+  },
+  expert: {
+    name: "Anonymous",
+    time: 999,
+  },
+};
+
 function initGame() {
   currentGame.field = [];
   currentGame.safeCells = [];
@@ -28,6 +44,9 @@ function initGame() {
   currentGame.fieldSize.rows = options.fieldSize.rows;
   currentGame.minescount = options.minescount;
   currentGame.timer = 0;
+  currentGame.level = options.level;
+
+  ui_frame.classList.remove("victory", "defeat");
   ui_field.innerHTML = "";
 
   generateField(currentGame.fieldSize);
@@ -200,11 +219,6 @@ function defeat(cell) {
   ui_frame.classList.add("defeat");
   clearInterval(currentGame.timerActive);
   currentGame.timerActive = false;
-
-  setTimeout(() => {
-    initGame();
-    ui_frame.classList.remove("defeat");
-  }, 1000);
 }
 
 // In case of victory (all safe cells visible)
@@ -213,10 +227,12 @@ function victory() {
   clearInterval(currentGame.timerActive);
   currentGame.timerActive = false;
 
-  setTimeout(() => {
-    initGame();
-    ui_frame.classList.remove("victory");
-  }, 2000);
+  if (currentGame.timer < best[currentGame.level].time) {
+    best[currentGame.level].time = currentGame.timer;
+    updateLeaderboard();
+
+    localStorage.setItem("best", JSON.stringify(best));
+  }
 }
 
 //
@@ -365,7 +381,6 @@ function displayCount(canvas, count) {
 }
 
 // Custom field options
-
 ui_menu.addEventListener("click", (e) => {
   if (!e.target.classList.contains("opt_level")) return;
 
@@ -374,22 +389,26 @@ ui_menu.addEventListener("click", (e) => {
       rows: 9,
       cols: 9,
       mines: 10,
+      level: "beginner",
     },
     opt_intermediate: {
       rows: 16,
       cols: 16,
       mines: 40,
+      level: "intermediate",
     },
     opt_expert: {
       rows: 16,
       cols: 30,
       mines: 99,
+      level: "expert",
     },
   };
 
   options.fieldSize.rows = presets[e.target.id].rows;
   options.fieldSize.cols = presets[e.target.id].cols;
   options.minescount = presets[e.target.id].mines;
+  options.level = presets[e.target.id].level;
 
   initGame();
 });
@@ -405,8 +424,31 @@ opt_form.addEventListener("submit", (e) => {
   options.fieldSize.cols = opt_form.cols.value;
   options.minescount = opt_form.mines.value;
 
+  if (currentGame.timerActive) {
+    clearInterval(currentGame.timerActive);
+    currentGame.timerActive = false;
+  }
   initGame();
 });
+
+// Display highscores
+opt_best.addEventListener("click", (e) => {
+  ui_best.classList.toggle("hidden");
+});
+
+function updateLeaderboard() {
+  ui_best_beginner.querySelector(".best_time span").innerText =
+    best.beginner.time;
+  ui_best_beginner.querySelector(".best_name").innerText = best.beginner.name;
+  ui_best_intermediate.querySelector(".best_time span").innerText =
+    best.intermediate.time;
+  ui_best_intermediate.querySelector(".best_name").innerText =
+    best.intermediate.name;
+  ui_best_expert.querySelector(".best_time span").innerText = best.expert.time;
+  ui_best_expert.querySelector(".best_name").innerText = best.expert.name;
+}
+
+updateLeaderboard();
 
 //
 
