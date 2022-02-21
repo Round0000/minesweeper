@@ -1,6 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap");
 
-
 :root {
   --clr-blue: #0000ff;
   --clr-green: #008000;
@@ -12,7 +11,10 @@
   --clr-gray: #808080;
   --clr-lightgray: #c0c0c0;
 
-  --cellsize: 32px;
+  --cellsize: 28px;
+
+  --cols: 9;
+  --rows: 9;
 }
 *,
 *::before,
@@ -30,17 +32,186 @@ button {
   font-family: inherit;
 } /*****************/
 
-#ui_frame {
-  background-color: var(--clr-lightgray);
+#ui_window {
   width: max-content;
   margin: 4em auto 1em;
+  background-color: pink;
+  box-shadow: 0 2px 4px #0005;
+  border: 6px solid #222;
+}
+
+#ui_menu {
+  background-color: #ece9d8;
+  display: flex;
+  list-style: none;
+  font-size: 0.9rem;
+}
+
+#ui_menu button,
+#ui_menu input {
+  font-size: inherit;
+}
+
+#ui_menu ul {
+  list-style: none;
+  user-select: none;
+  cursor: default;
+}
+
+#ui_menu hr {
+  border: none;
+  border-bottom: 1px solid #bbb;
+  margin: 4px;
+}
+
+#ui_menu > li {
+  position: relative;
+  user-select: none;
+}
+
+#ui_menu > li > button {
+  padding: 4px 8px;
+}
+
+#ui_menu .ui_menu_subnav {
+  background-color: white;
+  box-shadow: 2px 2px 2px #0005;
+  border: 2px solid #ccc;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  padding: 2px;
+  display: none;
+}
+
+#ui_menu .ui_menu_subnav li {
+  display: flex;
+  min-width: 13em;
+  padding: 0.25em 1em;
+}
+
+#ui_menu input[type="radio"] {
+  all: unset;
+  display: block;
+  align-self: center;
+  height: 1em;
+  width: 1em;
+  margin-left: -0.75em;
+  margin-right: 0.25em;
+  position: relative;
+}
+
+#ui_menu input[type="radio"]:checked::before {
+  content: "\2713";
+  position: absolute;
+  inset: 0;
+  line-height: 1;
+  display: flex;
+  justify-content: center;
+}
+
+#ui_menu label {
+  flex: 1;
+}
+
+#ui_menu button {
+  appearance: none;
+  border: none;
+  background-color: inherit;
+  outline: none;
+  padding-left: 0.5em;
+  color: inherit;
+}
+
+#ui_menu .ui_menu_subnav button {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+}
+
+#ui_menu .ui_menu_subnav li:hover,
+#ui_menu .ui_menu_subnav li:focus-within {
+  background-color: #316ac5;
+  color: white;
+}
+
+#ui_menu button:focus + ul,
+#ui_menu ul:hover {
+  display: block;
+}
+
+#ui_menu_custom {
+  display: grid !important;
+  grid-template-columns: 1fr;
+  padding-left: 0 !important;
+}
+
+#ui_menu_custom > input:first-of-type {
+  grid-column: 1;
+  grid-row: 1;
+  margin-left: .25em;
+}
+#ui_menu_custom > label:first-of-type {
+  grid-column: 1;
+  grid-row: 1;
+  margin-left: 1.5em;
+}
+
+#ui_menu_custom form {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  margin-left: 0.5em;
+  margin-top: 0.5em;
+  display: none;
+  padding: 0.5em;
+  border: 1px solid #0005;
+  background-color: rgb(245, 245, 245);
+  color: #000;
+  box-shadow: inset 1px 1px 3px #0002;
+}
+
+#ui_menu_custom form label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.5em;
+}
+
+#ui_menu_custom form input {
+  width: 4em;
+  padding: .1em .25em;
+}
+
+#opt_buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+#ui_menu_custom #opt_buttons button {
+  border: 1px solid #0005;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: .25em;
+  background-color: white;
+}
+
+#opt_custom:checked ~ form {
+  display: block;
+}
+
+/* Game Interface */
+
+#ui_frame {
+  background-color: var(--clr-lightgray);
   padding: 16px;
+  border: 2px solid white;
 }
 
 #ui_field {
   display: grid;
-  grid-template-columns: repeat(9, var(--cellsize));
-  grid-template-rows: repeat(9, var(--cellsize));
+  grid-template-columns: repeat(var(--cols), var(--cellsize));
+  grid-template-rows: repeat(var(--rows), var(--cellsize));
   width: max-content;
   background-color: var(--clr-lightgray);
   user-select: none;

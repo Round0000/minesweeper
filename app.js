@@ -33,11 +33,17 @@ function initGame() {
   generateField(currentGame.fieldSize);
 
   displayField(currentGame.field);
+
+  opt_rows.value = currentGame.fieldSize.rows;
+  opt_cols.value = currentGame.fieldSize.cols;
+  opt_mines.value = currentGame.minescount;
 }
 
 function generateField(size) {
   let x = 1;
   let y = 1;
+
+  ui_field.style = `--cols: ${size.cols}; --rows: ${size.rows}; `;
 
   for (let i = 0; i < size.cols * size.rows; i++) {
     const cell = {
@@ -72,9 +78,8 @@ function generateField(size) {
   displayCount(ui_timecount, currentGame.timer);
 }
 
-function findAdjacent(target) {
+function findAdjacentCells(target) {
   target.seen = true;
-  //
 
   const adj = mapCells(target);
 
@@ -103,7 +108,7 @@ function findAdjacent(target) {
 
   results.forEach((res) => {
     if (!res.adjMines) {
-      results = new Set([...results, ...findAdjacent(res)]);
+      results = new Set([...results, ...findAdjacentCells(res)]);
     }
   });
 
@@ -248,7 +253,7 @@ document.addEventListener("click", (e) => {
         e.target.innerText = adjMines;
       }
     } else {
-      const results = [targetCell, ...findAdjacent(targetCell)];
+      const results = [targetCell, ...findAdjacentCells(targetCell)];
 
       results.forEach((res) => {
         const visibleCell = document.querySelector(
@@ -294,6 +299,7 @@ function flagCell(c) {
   }
 }
 
+// Right click to set a flag/hypothese
 document.addEventListener("contextmenu", (e) => {
   e.preventDefault();
 
@@ -357,6 +363,50 @@ function displayCount(canvas, count) {
 
   canvas.style.opacity = 1;
 }
+
+// Custom field options
+
+ui_menu.addEventListener("click", (e) => {
+  if (!e.target.classList.contains("opt_level")) return;
+
+  const presets = {
+    opt_beginner: {
+      rows: 9,
+      cols: 9,
+      mines: 10,
+    },
+    opt_intermediate: {
+      rows: 16,
+      cols: 16,
+      mines: 40,
+    },
+    opt_expert: {
+      rows: 16,
+      cols: 30,
+      mines: 99,
+    },
+  };
+
+  options.fieldSize.rows = presets[e.target.id].rows;
+  options.fieldSize.cols = presets[e.target.id].cols;
+  options.minescount = presets[e.target.id].mines;
+
+  initGame();
+});
+
+const opt_form = document.querySelector("#ui_menu_custom form");
+
+opt_form.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  console.log(opt_form.rows.value);
+
+  options.fieldSize.rows = opt_form.rows.value;
+  options.fieldSize.cols = opt_form.cols.value;
+  options.minescount = opt_form.mines.value;
+
+  initGame();
+});
 
 //
 

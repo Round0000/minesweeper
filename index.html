@@ -27,13 +27,112 @@
       <img id="num_9" src="./img/9.png" alt="" />
     </div>
 
-    <div id="ui_frame">
-      <header id="ui_header">
-        <canvas id="ui_minescount"> </canvas>
-        <button id="ui_start_btn"></button>
-        <canvas id="ui_timecount"> </canvas>
-      </header>
-      <div id="ui_field"></div>
+    <div id="ui_window">
+      <ul id="ui_menu">
+        <li>
+          <button>Game</button>
+          <ul class="ui_menu_subnav">
+            <li>
+              <button id="btn_new"><span>New</span><span>F2</span></button>
+            </li>
+            <hr />
+            <li>
+              <input
+                type="radio"
+                name="fieldOptions"
+                class="opt_level"
+                id="opt_beginner"
+              />
+              <label for="opt_beginner">Beginner</label>
+            </li>
+            <li>
+              <input
+                type="radio"
+                name="fieldOptions"
+                class="opt_level"
+                id="opt_intermediate"
+              />
+              <label for="opt_intermediate">Intermediate</label>
+            </li>
+            <li>
+              <input
+                type="radio"
+                name="fieldOptions"
+                class="opt_level"
+                id="opt_expert"
+              />
+              <label for="opt_expert">Expert</label>
+            </li>
+            <li id="ui_menu_custom">
+              <input
+                type="radio"
+                name="fieldOptions"
+                id="opt_custom"
+              />
+              <label for="opt_custom">Custom...</label>
+              <form>
+                <label for="opt_rows">
+                  <span>Height :</span>
+                  <input
+                    type="number"
+                    name="rows"
+                    maxlength="3"
+                    min="9"
+                    max="24"
+                    id="opt_rows"
+                  />
+                </label>
+                <label for="opt_cols">
+                  <span>Width :</span>
+                  <input
+                    type="number"
+                    name="cols"
+                    maxlength="3"
+                    min="9"
+                    max="30"
+                    id="opt_cols"
+                  />
+                </label>
+                <label for="opt_mines">
+                  <span>Mines :</span>
+                  <input
+                    type="number"
+                    name="mines"
+                    maxlength="3"
+                    min="10"
+                    id="opt_mines"
+                  />
+                </label>
+                <div id="opt_buttons">
+                  <button>Cancel</button>
+                  <button type="submit">OK</button>
+                </div>
+              </form>
+            </li>
+
+            <hr />
+            <li>
+              <button id="btn_marks"><span>Marks (?)</span></button>
+            </li>
+            <li>
+              <button id="btn_color"><span>Color</span></button>
+            </li>
+            <hr />
+            <li>
+              <button><span>Best Times...</span></button>
+            </li>
+          </ul>
+        </li>
+        <li><button>Help</button></li>
+      </ul>
+      <div id="ui_frame">
+        <header id="ui_header">
+          <canvas id="ui_minescount"> </canvas>
+          <button id="ui_start_btn"></button>
+          <canvas id="ui_timecount"> </canvas>
+        </header>
+        <div id="ui_field"></div>
+      </div>
     </div>
 
     <!--  -->
