@@ -435,7 +435,7 @@ button {
   margin-bottom: 1em;
 }
 
-#ui_save_best button {
+.xpbtn {
   padding: 0.1em 1em;
   border: 2px solid transparent;
   outline: 1px solid hsl(214, 70%, 30%);
@@ -445,8 +445,8 @@ button {
   margin: 1em auto;
 }
 
-#ui_save_best button:hover,
-#ui_save_best button:focus-visible {
+.xpbtn:hover,
+.xpbtn:focus-visible {
   background: linear-gradient(#fff, #eee),
     linear-gradient(to top, orange, rgba(255, 166, 0, 0.3));
   background-clip: padding-box, border-box;
