@@ -234,15 +234,16 @@ function victory() {
   ui_frame.classList.add("victory");
   clearTimer();
 
-  if (currentGame.timer < best[currentGame.level].time) {
+  if (currentGame.level && currentGame.timer < best[currentGame.level].time) {
     ui_save_best.classList.remove("hidden");
     ui_save_best.querySelector("label span").innerText = currentGame.level;
+    ui_frame.querySelector("#ui_save_best input").focus();
   }
 }
 
 function saveNewScore() {
   best[currentGame.level].time = currentGame.timer;
-  best[currentGame.level].name = ui_save_best.best_name.value;
+  best[currentGame.level].name = ui_save_best.best_name.value || "Anonymous";
   updateLeaderboard();
 
   localStorage.setItem("minesweeper_best", JSON.stringify(best));
@@ -255,6 +256,7 @@ ui_save_best.addEventListener("submit", (e) => {
 
   ui_save_best.classList.add("hidden");
   ui_best.classList.remove("hidden");
+  ui_menu.querySelector('#opt_best').checked = true;
 });
 
 //
@@ -461,6 +463,7 @@ opt_form.addEventListener("submit", (e) => {
   options.fieldSize.rows = opt_form.rows.value;
   options.fieldSize.cols = opt_form.cols.value;
   options.minescount = opt_form.mines.value;
+  options.level = "";
 
   if (currentGame.timerActive) {
     clearInterval(currentGame.timerActive);
