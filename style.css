@@ -11,7 +11,7 @@
   --clr-gray: #808080;
   --clr-lightgray: #c0c0c0;
 
-  --cellsize: 28px;
+  --cellsize: 26px;
 
   --cols: 9;
   --rows: 9;
@@ -75,6 +75,12 @@ button {
   user-select: none;
 }
 
+#ui_menu > li:hover,
+#ui_menu > li:focus {
+  background-color: #316ac5;
+  color: white;
+}
+
 #ui_menu > li > button {
   padding: 4px 8px;
 }
@@ -94,6 +100,7 @@ button {
   display: flex;
   min-width: 13em;
   padding: 0.25em 1em;
+  color: black;
 }
 
 #ui_menu input[type="radio"],
@@ -187,20 +194,6 @@ button {
 #ui_menu_custom form input {
   width: 4em;
   padding: 0.1em 0.25em;
-}
-
-#opt_buttons {
-  display: flex;
-  justify-content: space-between;
-}
-
-#ui_menu_custom #opt_buttons button {
-  border: 1px solid #0005;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0.25em;
-  background-color: white;
 }
 
 #opt_custom:checked ~ form {
@@ -357,8 +350,8 @@ button {
 #ui_start_btn {
   all: unset;
   display: block;
-  width: 38px;
-  height: 38px;
+  width: calc(var(--cellsize) + 6px);
+  height: calc(var(--cellsize) + 6px);
   border: 3px solid var(--clr-gray);
   border-top-color: white;
   border-top-width: 3px;
@@ -435,7 +428,7 @@ button {
   margin-bottom: 1em;
 }
 
-.xpbtn {
+#ui_menu .xpbtn {
   padding: 0.1em 1em;
   border: 2px solid transparent;
   outline: 1px solid hsl(214, 70%, 30%);
@@ -445,8 +438,8 @@ button {
   margin: 1em auto;
 }
 
-.xpbtn:hover,
-.xpbtn:focus-visible {
+#ui_menu .xpbtn:hover,
+#ui_menu .xpbtn:focus-visible {
   background: linear-gradient(#fff, #eee),
     linear-gradient(to top, orange, rgba(255, 166, 0, 0.3));
   background-clip: padding-box, border-box;

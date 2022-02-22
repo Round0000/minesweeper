@@ -256,7 +256,7 @@ ui_save_best.addEventListener("submit", (e) => {
 
   ui_save_best.classList.add("hidden");
   ui_best.classList.remove("hidden");
-  ui_menu.querySelector('#opt_best').checked = true;
+  ui_menu.querySelector("#opt_best").checked = true;
 });
 
 //
@@ -352,9 +352,12 @@ document.addEventListener("mouseup", (e) => {
 // Flag a cell
 function flagCell(c) {
   if (c.classList.contains("flagged")) {
-    c.classList.replace("flagged", "hypothese");
     currentGame.minescount++;
     displayCount(ui_minescount, currentGame.minescount);
+    c.classList.remove("flagged");
+
+    if (!opt_marks.checked) return;
+    c.classList.add("hypothese");
   } else if (c.classList.contains("hypothese")) {
     c.classList.remove("hypothese");
   } else {
