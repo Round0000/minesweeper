@@ -58,6 +58,25 @@ button {
   font-size: inherit;
 }
 
+#ui_menu .xpbtn {
+  padding: 0.1em 1em;
+  border: 2px solid transparent;
+  outline: 1px solid hsl(214, 70%, 30%);
+  border-radius: 3px;
+  border-bottom: 2px solid #0001;
+  width: max-content;
+  margin: 1em auto;
+}
+
+#ui_menu .xpbtn:hover,
+#ui_menu .xpbtn:focus-visible {
+  background: linear-gradient(#fff, #eee),
+    linear-gradient(to top, orange, rgba(255, 166, 0, 0.3));
+  background-clip: padding-box, border-box;
+  background-size: cover;
+  background-origin: border-box;
+}
+
 #ui_menu ul {
   list-style: none;
   user-select: none;
@@ -93,13 +112,15 @@ button {
   top: 100%;
   left: 0;
   padding: 2px;
-  display: none;
+}
+
+.ui_menu_subnav:hover {
+  display: block;
 }
 
 #ui_menu .ui_menu_subnav li {
-  display: flex;
+  display: grid;
   min-width: 13em;
-  padding: 0.25em 1em;
   color: black;
 }
 
@@ -107,12 +128,13 @@ button {
 #ui_menu input[type="checkbox"] {
   all: unset;
   display: block;
-  align-self: center;
   height: 1em;
   width: 1em;
-  margin-left: -0.75em;
-  margin-right: 0.25em;
   position: relative;
+  align-self: center;
+  grid-column: 1;
+  grid-row: 1;
+  margin-left: .25em;
 }
 
 #ui_menu input:checked::before {
@@ -124,8 +146,15 @@ button {
   justify-content: center;
 }
 
-#ui_menu label {
-  flex: 1;
+#ui_menu .ui_menu_subnav li > label:not([for="opt_custom"]),
+#ui_menu .ui_menu_subnav li > button {
+  padding: 0.25em 1em .25em 1.5em;
+  grid-column: 1;
+  grid-row: 1;
+}
+
+#ui_menu label[for="opt_custom"] {
+  padding: .25em 0;
 }
 
 #ui_menu button {
@@ -149,11 +178,6 @@ button {
   color: white;
 }
 
-#ui_menu button:focus + ul,
-#ui_menu ul:hover {
-  display: block;
-}
-
 #ui_menu_custom {
   display: grid !important;
   grid-template-columns: 1fr;
@@ -174,10 +198,9 @@ button {
 #ui_menu_custom form {
   grid-column: 1 / -1;
   grid-row: 2;
-  margin-left: 0.5em;
-  margin-top: 0.5em;
   display: none;
-  padding: 0.5em;
+  padding: .5em 0.75em;
+  padding-left: 1.5em;
   border: 1px solid #0005;
   background-color: rgb(245, 245, 245);
   color: #000;
@@ -198,6 +221,10 @@ button {
 
 #opt_custom:checked ~ form {
   display: block;
+}
+
+#ui_menu_custom .xpbtn {
+  margin-bottom: .25em;
 }
 
 /* Best times display */
@@ -274,7 +301,7 @@ button {
   justify-content: center;
   align-items: center;
   cursor: default;
-  font-size: var(--cellsize);
+  font-size: calc(var(--cellsize) - 4px);
   font-weight: bold;
   background-color: var(--clr-lightgray);
 }
@@ -428,24 +455,7 @@ button {
   margin-bottom: 1em;
 }
 
-#ui_menu .xpbtn {
-  padding: 0.1em 1em;
-  border: 2px solid transparent;
-  outline: 1px solid hsl(214, 70%, 30%);
-  border-radius: 3px;
-  border-bottom: 2px solid #0001;
-  width: max-content;
-  margin: 1em auto;
-}
 
-#ui_menu .xpbtn:hover,
-#ui_menu .xpbtn:focus-visible {
-  background: linear-gradient(#fff, #eee),
-    linear-gradient(to top, orange, rgba(255, 166, 0, 0.3));
-  background-clip: padding-box, border-box;
-  background-size: cover;
-  background-origin: border-box;
-}
 
 #ui_save_best input {
   padding: 0.2em;

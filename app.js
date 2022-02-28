@@ -427,7 +427,15 @@ function displayCount(canvas, count) {
 
 // Custom field options
 ui_menu.addEventListener("click", (e) => {
-  if (!e.target.classList.contains("opt_level")) return;
+  console.log(e.target);
+
+  if (e.target.matches("#ui_menu > li button")) {
+    e.target.parentElement
+      .querySelector(".ui_menu_subnav")
+      .classList.toggle("hidden");
+  }
+
+  // if (!e.target.classList.contains("opt_level")) return;
 
   const presets = {
     opt_beginner: {
@@ -450,10 +458,17 @@ ui_menu.addEventListener("click", (e) => {
     },
   };
 
+  let l = e.target.id;
+  l = l === "" ? e.target.querySelector("input").id : l;
+
+  console.log(l);
+
   options.fieldSize.rows = presets[e.target.id].rows;
   options.fieldSize.cols = presets[e.target.id].cols;
   options.minescount = presets[e.target.id].mines;
   options.level = presets[e.target.id].level;
+
+  document.querySelector(".ui_menu_subnav").classList.add("hidden");
 
   initGame();
 });
@@ -467,6 +482,8 @@ opt_form.addEventListener("submit", (e) => {
   options.fieldSize.cols = opt_form.cols.value;
   options.minescount = opt_form.mines.value;
   options.level = "";
+
+  ui_menu.querySelector(".ui_menu_subnav").classList.add("hidden");
 
   if (currentGame.timerActive) {
     clearInterval(currentGame.timerActive);
