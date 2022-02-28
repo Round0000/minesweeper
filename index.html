@@ -31,10 +31,10 @@
     <div id="ui_window">
       <ul id="ui_menu">
         <li>
-          <button>Game</button>
+          <button class="menu_toggler">Game</button>
           <ul class="ui_menu_subnav hidden">
             <li class="submenu_btn">
-              <button id="btn_new"><span>New</span><span>F2</span></button>
+              <button id="btn_new" class="btn_new_game"><span>New</span><span>F2</span></button>
             </li>
             <hr />
             <li class="submenu_btn">
@@ -114,7 +114,7 @@
               />
               <label for="opt_marks">Marks (?)</label>
             </li>
-            
+
             <hr />
             <li class="submenu_btn">
               <input
@@ -130,7 +130,7 @@
       <div id="ui_frame">
         <header id="ui_header">
           <canvas id="ui_minescount"> </canvas>
-          <button id="ui_start_btn"></button>
+          <button id="ui_start_btn" class="btn_new_game"></button>
           <canvas id="ui_timecount"> </canvas>
         </header>
         <div id="ui_field"></div>

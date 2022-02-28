@@ -429,13 +429,13 @@ function displayCount(canvas, count) {
 ui_menu.addEventListener("click", (e) => {
   console.log(e.target);
 
-  if (e.target.matches("#ui_menu > li button")) {
+  if (e.target.matches(".menu_toggler")) {
     e.target.parentElement
       .querySelector(".ui_menu_subnav")
       .classList.toggle("hidden");
   }
 
-  // if (!e.target.classList.contains("opt_level")) return;
+  if (!e.target.classList.contains("opt_level")) return;
 
   const presets = {
     opt_beginner: {
@@ -520,9 +520,13 @@ window.onload = () => {
 //
 
 // Start button
-ui_start_btn.addEventListener("click", (e) => {
-  clearTimer();
-  initGame();
+
+document.addEventListener("click", (e) => {
+  if (e.target.matches(".btn_new_game")) {
+    clearTimer();
+    initGame();
+    ui_menu.querySelector(".ui_menu_subnav").classList.add("hidden");
+  }
 });
 
 document.addEventListener("keyup", (e) => {

@@ -178,6 +178,10 @@ button {
   color: white;
 }
 
+#ui_menu .btn_new_game * {
+  pointer-events: none;
+}
+
 #ui_menu_custom {
   display: grid !important;
   grid-template-columns: 1fr;
@@ -200,11 +204,12 @@ button {
   grid-row: 2;
   display: none;
   padding: .5em 0.75em;
-  padding-left: 1.5em;
   border: 1px solid #0005;
   background-color: rgb(245, 245, 245);
   color: #000;
   box-shadow: inset 1px 1px 3px #0002;
+  margin: 2px;
+  margin-top: 0;
 }
 
 #ui_menu_custom form label {
@@ -459,4 +464,14 @@ button {
 
 #ui_save_best input {
   padding: 0.2em;
+}
+
+#ui_save_best .xpbtn {
+  padding: 0.1em 1em;
+  border: 2px solid transparent;
+  outline: 1px solid hsl(214, 70%, 30%);
+  border-radius: 3px;
+  border-bottom: 2px solid #0001;
+  width: max-content;
+  margin: 1em auto;
 }
